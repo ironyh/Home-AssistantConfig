@@ -1,0 +1,107 @@
+homeassistant:
+  name: Home
+  latitude: 59.868279
+  longitude: 17.640986
+  elevation: 16.41
+  unit_system: metric
+  time_zone: Europe/Stockholm
+  #customize: !include customize.yaml
+
+frontend:
+  javascript_version: latest
+config:
+http:
+  api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  base_url: !secret base_url
+  #server_port: 8800
+  server_host: !secret server_host
+  #ssl_certificate: /etc/letsencrypt/live/home.sessan.me/fullchain.pem
+  #ssl_key: /etc/letsencrypt/live/home.sessan.me/privkey.pem
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+   include_used_components: true
+
+# Discover some devices automatically
+discovery:
+  ignore:
+    - samsung_tv
+    - google_cast
+    
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+
+# Weather prediction
+sensor:
+  - platform: yr
+
+#ifttt
+ifttt:
+  key: !secret ifttt_key
+
+# Text to speech
+tts:
+  - platform: google
+
+# Media players
+media_player: !include_dir_merge_list media_player
+
+
+
+#Trackers
+device_tracker: !include_dir_merge_list device_tracker/    
+
+#Google assistant
+google_assistant:
+  project_id: !secret google_assistant_project_id
+  client_id: !secret google_assistant_client_id
+  access_token: !secret google_assistant_acess_token
+  exposed_domains:
+    - switch
+    - light
+    - group
+    
+group: !include_dir_merge_named group
+automation: !include_dir_merge_list automation
+script: !include_dir_merge_named scripts
+input_boolean: !include_dir_merge_named input_boolean
+
+#####################################################################
+#                            Ip-webcam                              #
+#####################################################################
+android_ip_webcam:
+    #S4
+  - host: !secret hallway_cam_ip
+    name: Hallwaycam
+     
+    #Tab4
+  - host: !secret kitchen_cam_ip
+    name: Kitchencam
+    
+notify:
+  - platform: html5
+    gcm_api_key: !secret gcm_api_key
+    gcm_sender_id: !secret gcm_sender_id
+
+
+
+
+
+
+
