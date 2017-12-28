@@ -1,0 +1,16 @@
+Family:
+  entities:
+    - device_tracker.Arash
+    - device_tracker.Emil
+    - device_tracker.Camilla
+Relatives:
+  entities:
+    - device_tracker.Pär
+    - device_tracker.Linn
+    - device_tracker.Joel
+    - device_tracker.Helena
+    - device_tracker.Fatima
+    - device_tracker.Ashkan
+    - device_tracker.Giggi
+    
+  

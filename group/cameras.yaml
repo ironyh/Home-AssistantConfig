@@ -1,0 +1,9 @@
+#####################################################################
+#                            Create a view for cameras              #
+#####################################################################
+Cameras:
+  view: yes
+  icon: mdi:camcorder
+  entities:
+    - camera.hallwaycam
+    - camera.kitchencam

@@ -1,0 +1,7 @@
+meds_taken:
+  name: 'Meds have been taken'
+  initial: 'off'
+  icon: mdi:pill
+meds_reminder:
+  name: 'Meds reminder enabled'
+  initial: 'on'

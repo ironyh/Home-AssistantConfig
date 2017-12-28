@@ -1,0 +1,11 @@
+#####################################################################
+#                       GROUP: Media player                         #
+#####################################################################
+media_players:
+  entities:
+    - media_player.livingroom_tv
+    - media_player.bedroom_tv
+    
+    - media_player.chipsmongo
+    - media_player.huvudsovrum
+    

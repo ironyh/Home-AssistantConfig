@@ -1,0 +1,48 @@
+#####################################################################
+#                            Create a view for lights               #
+#####################################################################
+Lights:
+  icon: mdi:lamp
+  view: yes
+  entities:
+    - group.hallway_lights
+    - group.living_room_lights
+    - group.bedroom_lights
+
+#####################################################################
+#                            Bedroom                                #
+#####################################################################
+Bedroom lights:
+  entities:
+    - light.emil
+    - light.Arash
+    - light.sovrummet_tak
+
+#####################################################################
+#                            Hallway                                #
+#####################################################################
+Hallway lights:
+  entities:
+    - light.bordslampa
+    - light.taklampa
+    - light.taklampa_2
+
+#####################################################################
+#                        Living room                                #
+#####################################################################
+
+Living Room lights:
+  entities:
+    - light.golvlampan
+    - light.govlampa
+    - light.bordslampan
+    - light.skrivbordet
+    - light.golvlampan_vid_tvn
+    - light.retro_golvlampan
+    - light.taklampa
+#####################################################################
+#                        Kitchen                                    #
+#####################################################################
+Kitchen Lights:
+  entities:
+    - light.taklampan_3

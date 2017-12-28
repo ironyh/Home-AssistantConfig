@@ -1,0 +1,38 @@
+
+
+#####################################################################
+#                            SAMSUNG TV                             #
+#####################################################################
+- platform: samsungtv
+  host: !secret samsungtv_host
+  port: 7676    
+  timeout: 10
+  mac: !secret samsungtv_mac
+  name: TV - Bedroom 
+  
+#####################################################################
+#                            BRAVIA TV                              #
+#####################################################################
+- platform: braviatv
+  host: !secret braviatv_host
+  name: TV - Livingroom 
+  
+#####################################################################
+#                              ONKYO                                #
+#####################################################################
+- platform: onkyo
+  host: !secret onkyo_host
+  name: !secret onkyo_name
+  
+#####################################################################
+#                          CAST DEVICES                             #
+#####################################################################
+- platform: cast
+
+#####################################################################
+#                           SPOTIFY                                 #
+#####################################################################
+- platform: spotify
+  client_id: !secret spotify_client_id
+  client_secret: !secret spotify_client_secret
+  cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
