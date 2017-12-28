@@ -42,7 +42,7 @@
   alias: Meds have not been taken weekday
   trigger:
     platform: time
-    after: '10:22:00'
+    after: '10:00:00'
   condition:
     condition: and
     conditions:
@@ -53,7 +53,7 @@
         entity_id: input_boolean.meds_reminder
         state: 'on'
       - condition: time
-        before: '00:22:00'
+        before: '10:22:00'
         weekday:
           - mon
           - tue
