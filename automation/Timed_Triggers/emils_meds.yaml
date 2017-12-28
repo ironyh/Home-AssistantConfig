@@ -1,0 +1,70 @@
+- id: MEDS_TAKEN
+  alias: Reset meds taken
+  trigger: state
+    platform: state
+    entity_id: input_boolean.meds_taken
+    to: 'on'
+    for:
+      hours: 2
+    action:
+      service: input_boolean.turn_off
+
+- id: NOTIFICAION_MEDS_TAKEN
+  alias: Mark meds as taken from notification
+  trigger:
+    platform: event
+    event_type: html5_notification.clicked
+    event_data:
+      action: taken
+    action:
+      - service: input_boolean.meds_taken
+        entity_id: input_boolean.meds_taken
+      - service: logbook.log
+        data:
+          name: "Medicine Log Push"
+          message: "Took Medicine today.
+        
+- id: MEDS_NOT_TAKEN
+  alias: Notify Emil about medication in 30 min again
+  trigger:
+    platform: event
+    event_type: html5_notification.clicked
+    event_data:
+      action: taken
+      
+- id: MEDS_NOT_TAKEN_WEEKAY
+  alias: Meds have not been taken weekday
+    trigger:
+      platform: time
+      after: '10:22:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.meds_taken
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.meds_reminder
+          state: 'on'
+        - condition: time
+          before: '00:22:00'
+          weekday:
+            - mon
+            - tue
+            - wed
+            - thu
+            - fri
+        action:
+          title: Påminnelse om medicin
+          message: Har du tagit dina mediciner?
+          target: Emils_s8
+          data:
+            tag: med-notification
+            icon: https://www.sessan.me/static/icons/medical.png
+            actions:
+              - action: taken
+                icon: https://www.sessan.me/static/icons/check.png
+                title: Yep. Tagen
+              - action: remind_30
+                icon: https://www.sessan.me/static/icons/alarm.png
+                title: Om 30 min
