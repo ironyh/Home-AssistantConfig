@@ -22,7 +22,7 @@
       - service: logbook.log
         data:
           name: "Medicine Log Push"
-          message: "Took Medicine today.
+          message: "Took Medicine today."
         
 - id: MEDS_NOT_TAKEN
   alias: Notify Emil about medication in 30 min again
@@ -30,7 +30,13 @@
     platform: event
     event_type: html5_notification.clicked
     event_data:
-      action: taken
+      action: remind_30
+    action:
+      - service: timer.start
+        entity_id: timer.meds_reminder_timer
+      alias: MedReminderTimer
+      id: 'MedReminderTimer'
+      
       
 - id: MEDS_NOT_TAKEN_WEEKAY
   alias: Meds have not been taken weekday
