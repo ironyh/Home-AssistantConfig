@@ -33,7 +33,7 @@ discovery:
   ignore:
     - samsung_tv
     - google_cast
-    
+
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
@@ -52,8 +52,8 @@ sensor:
   - platform: yr
 
 #ifttt
-ifttt:
-  key: !secret ifttt_key
+#ifttt:
+#  key: !secret ifttt_key
 
 # Text to speech
 tts:
@@ -65,7 +65,7 @@ media_player: !include_dir_merge_list media_player
 
 
 #Trackers
-device_tracker: !include_dir_merge_list device_tracker/    
+device_tracker: !include_dir_merge_list device_tracker/
 
 #Google assistant
 google_assistant:
@@ -76,11 +76,12 @@ google_assistant:
     - switch
     - light
     - group
-    
+
 group: !include_dir_merge_named group
 automation: !include_dir_merge_list automation
 script: !include_dir_merge_named scripts
 input_boolean: !include_dir_merge_named input_boolean
+timer: !include_dir_merge_named timer
 
 #####################################################################
 #                            Ip-webcam                              #
@@ -89,19 +90,15 @@ android_ip_webcam:
     #S4
   - host: !secret hallway_cam_ip
     name: Hallwaycam
-     
+
     #Tab4
-  - host: !secret kitchen_cam_ip
-    name: Kitchencam
-    
+  - host: !secret GalaxyTab4_ip
+    name: GalaxyTab4
+    username: !secret tab4_account
+    password: !secret tab4_secret
+
 notify:
   - platform: html5
+    name: html5
     gcm_api_key: !secret gcm_api_key
     gcm_sender_id: !secret gcm_sender_id
-
-
-
-
-
-
-

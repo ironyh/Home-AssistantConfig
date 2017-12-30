@@ -3,7 +3,7 @@
 #####################################################################
 Cameras:
   view: yes
-  icon: mdi:camcorder
+  icon: mdi:cctv
   entities:
     - camera.hallwaycam
-    - camera.kitchencam
+    - camera.GalaxyTab4

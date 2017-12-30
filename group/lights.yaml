@@ -8,6 +8,7 @@ Lights:
     - group.hallway_lights
     - group.living_room_lights
     - group.bedroom_lights
+    - group.kitchen_lights
 
 #####################################################################
 #                            Bedroom                                #
