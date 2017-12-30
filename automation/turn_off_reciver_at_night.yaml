@@ -1,25 +1,24 @@
 #####################################################################
 #    TURN OFF BEDROOMRECIVER WHEN BEDROOM TV IS TURNED OFF          #
 #####################################################################
+#- alias: 'Reciver off when TV is turned off'
+#  trigger:
+#    - platform: state
+#      entity_id: media_player.tv__bedroom
+#      to: 'off'
 
-- alias: 'Reciver off when TV is turned off'
-  trigger:
-    - platform: state
-      entity_id: media_player.tv__bedroom
-      to: 'off'
-      
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: sun.sun
-        state: 'below_horizon'
-      - condition: time
-        after: '21:00:00'
-        before: '03:00:00'
-        
-  action:
-    - service: media_player.turn_off
-      entity_id:
-        - media_player.receiver
-    - delay: '00:00:15'
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: state
+#        entity_id: sun.sun
+#        state: 'below_horizon'
+#      - condition: time
+#        after: '21:00:00'
+#        before: '03:00:00'
+#
+#  action:
+#    - service: media_player.turn_off
+#      entity_id:
+#        - media_player.receiver
+#    - delay: '00:00:15'

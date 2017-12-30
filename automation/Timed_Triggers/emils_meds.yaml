@@ -1,48 +1,11 @@
-- id: MEDS_TAKEN
-  alias: Reset meds taken
-  trigger: state
-    platform: state
-    entity_id: input_boolean.meds_taken
-    to: 'on'
-    for:
-      hours: 2
-  action:
-    service: input_boolean.turn_off
-
-- id: NOTIFICAION_MEDS_TAKEN
-  alias: Mark meds as taken from notification
-  trigger:
-    platform: event
-    event_type: html5_notification.clicked
-    event_data:
-      action: taken
-  action:
-    - service: input_boolean.meds_taken
-      entity_id: input_boolean.meds_taken
-    - service: logbook.log
-      data:
-        name: "Medicine Log Push"
-        message: "Took Medicine today."
-        
-- id: MEDS_NOT_TAKEN
-  alias: Notify Emil about medication in 30 min again
-  trigger:
-    platform: event
-    event_type: html5_notification.clicked
-    event_data:
-      action: remind_30
-  action:
-    - service: timer.start
-      entity_id: timer.meds_reminder_timer
-    alias: MedReminderTimer
-    id: 'MedReminderTimer'
-      
-      
-- id: MEDS_NOT_TAKEN_WEEKAY
-  alias: Meds have not been taken weekday
+#####################################################################
+#           Time trigger to send notification                       #
+#####################################################################
+- alias: "Meds - Notify Emil about meds"
+  id: notify_emil
   trigger:
     platform: time
-    after: '10:00:00'
+    at: '09:30:00'
   condition:
     condition: and
     conditions:
@@ -52,25 +15,120 @@
       - condition: state
         entity_id: input_boolean.meds_reminder
         state: 'on'
-      - condition: time
-        before: '10:22:00'
-        weekday:
-          - mon
-          - tue
-          - wed
-          - thu
-          - fri
   action:
-    title: Påminnelse om medicin
-    message: Har du tagit dina mediciner?
-    target: Emils_s8
+    service: notify.html5
     data:
-      tag: med-notification
-      icon: https://www.sessan.me/static/icons/medical.png
-      actions:
-        - action: taken
-          icon: https://www.sessan.me/static/icons/check.png
-          title: Yep. Tagen
-        - action: remind_30
-          icon: https://www.sessan.me/static/icons/alarm.png
-          title: Om 30 min
+      title: "Hej älskling"
+      message: "Har du tagit dina mediciner idag?"
+      target: "Emils notify"
+      data:
+        tag: "med_reminder"
+        icon: "https://www.sessan.me/static/icons/medical.png"
+        actions:
+          - action: "taken"
+            title: "Yep"
+            icon: "https://www.sessan.me/static/icons/ic_check_black_24dp_2x.png"
+          - action: "remind_30"
+            title: "Påminn sen"
+            icon: "https://www.sessan.me/static/icons/alarm.png"
+
+#####################################################################
+#           Log that the notification was successfully recived      #
+#####################################################################
+- alias: "Meds - push notification recived"
+  id: log_notification_sucess
+  trigger:
+    platform: event
+    event_type: html5_notification.received
+  action:
+    service: logbook.log
+    data:
+      name: "Medicine Log"
+      message: "Emil Recived Medicine Notification."
+
+#####################################################################
+#           Set bool to on when meds taken                          #
+#####################################################################
+- id: meds_taken
+  alias: "Meds - Mark meds as taken"
+  trigger:
+    platform: event
+    event_type: html5_notification.clicked
+    event_data:
+      action: taken
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.meds_taken
+    - service: logbook.log
+      data_template:
+        name: "Medicine Log"
+        message: "Took Medicine today."
+
+#####################################################################
+#           Start timer for next notification if Emil hasn't        #
+#           his meds.                                               #
+#####################################################################
+- id: start_timer
+  alias: "Meds - Start reminder timer"
+  trigger:
+    platform: event
+    event_type: html5_notification.clicked
+    event_data:
+      action: remind_30
+  action:
+    - service: timer.start
+      entity_id: timer.meds_reminder_timer
+###############################################################################
+#  Notify Emil again when timer done. Meds not taken this time means fail.    #
+###############################################################################
+- id: notify_emil_about_meds_again
+  alias: "Meds - Remind Emil a second time"
+  trigger:
+    platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.meds_reminder_timer
+  action:
+    service: notify.html5
+    data:
+      title: "Medicinpåminnelse"
+      message: "Har du tagit mediciner?"
+      target: "Emils notify"
+      data:
+        tag: "med_reminder"
+        icon: "https://www.sessan.me/static/icons/medical.png"
+        actions:
+          - action: "taken"
+            title: "Yep"
+            icon: "https://www.sessan.me/static/icons/ic_check_black_24dp_2x.png"
+          - action: "fail"
+            title: "Fail"
+            icon: "https://www.sessan.me/static/icons/ic_close_black_24dp_2x.png"
+###############################################################################
+#                      Log fail for taking medications                        #
+###############################################################################
+- id: meds_fail
+  alias: "Meds - Mark meds not taken for the day"
+  trigger:
+    platform: event
+    event_type: html5_notification.clicked
+    event_data:
+      action: Fail
+  action:
+    - service: logbook.log
+      data_template:
+        name: "Medicine Log"
+        message: "Emil did NOT take meds today."
+###############################################################################
+#                  Reset the taken bool for tomorrow                         #
+###############################################################################
+- id: reset_meds_after_2_hrs
+  alias: "Meds - Reset taken"
+  trigger:
+    platform: state
+    entity_id: input_boolean.meds_taken
+    to: 'on'
+    for:
+      hours: 2
+  action:
+    service: input_boolean.turn_off
